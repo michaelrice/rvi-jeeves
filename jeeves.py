@@ -202,7 +202,6 @@ def get_channel(connection=None):
 
 
 def publish_basic(channel, connection_info):
-    channel.queue_declare(queue=connection_info.get("rabbit_queue"))
     msg_body = ast.literal_eval(connection_info.get("rabbit_message_body"))
     if type(msg_body) is dict:
         msg_body = json.dumps(msg_body)
