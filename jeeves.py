@@ -207,6 +207,7 @@ def publish_basic(channel, connection_info):
         msg_body = json.dumps(msg_body)
     channel.basic_publish(exchange="", routing_key=connection_info.get("rabbit_queue"), body=msg_body)
 
+
 if __name__ == "__main__":
 
     CONF_FILE = str(os.getenv("PCOPS_PRIV")) + "/{0}".format("rvi-jeeves.conf")
