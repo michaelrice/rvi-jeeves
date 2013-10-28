@@ -55,10 +55,11 @@ rabbit_message_body -
     default: None
     type: Any
     Notes:
-        If you want to send JSON this should be a raw python dict.
-        If you want to send a String it must be in quotes
+        If you want to send JSON this should be a valid python dict.
+        If you want to send a String it MUST BE in quotes
+        Quotes are required here for a string because ast.literal_eval is used
 Notes:
-    All String values should stay unquoted.
+    All String values should stay unquoted unless otherwise noted.
     For example:
         "localhost" would parse into '"localhost"'
 =============================
