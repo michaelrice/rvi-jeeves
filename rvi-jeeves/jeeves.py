@@ -6,33 +6,33 @@ It reads a config file that should be in the form of:
 Configuration File Example
 =============================
 [serviceName]
-rabbit_host = ""
-rabbit_user = ""
-rabbit_pass = ""
-rabbit_vhost = ""
+rabbit_host = str
+rabbit_user = str
+rabbit_pass = str
+rabbit_vhost = str
 rabbit_port = 5672
-rabbit_queue = ""
-rabbit_exchange = ""
-rabbit_routing_key = ""
+rabbit_queue = str
+rabbit_exchange = str
+rabbit_routing_key = str
 rabbit_message_body = {}
 =============================
 
 Configuration File Options
 =============================
 rabbit_host  -
-    default: "localhost"
+    default: localhost
     type: String
 
 rabbit_user  -
-    default: "guest"
+    default: guest
     type: String
 
 rabbit_pass  -
-    default: "guest"
+    default: guest
     type: String
 
 rabbit_vhost -
-    default: "/"
+    default: /
     type: String
 
 rabbit_port -
@@ -57,6 +57,10 @@ rabbit_message_body -
     Notes:
         If you want to send JSON this should be a raw python dict.
         If you want to send a String it must be in quotes
+Notes:
+    All String values should stay unquoted.
+    For example:
+        "localhost" would parse into '"localhost"'
 =============================
 
 Configuration File Location
@@ -92,7 +96,9 @@ import pika
 import json
 import argparse
 import ConfigParser
+import logging
 
+logging.getLogger('pika').setLevel(logging.ERROR)
 
 def get_connection_info(config_inst, service_name):
     """
@@ -207,12 +213,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     help_msg = "Name of the service to use defined in the config file."
     parser.add_argument("-s", "--service", help=help_msg, required=True, type=str)
-    parser.add_argument("-f", "--file", help="Full path to config file")
+    parser.add_argument("-f", "--configfile", help="Full path to config file")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-b", "--basic", help="Use a basic queue to publish", action="store_true")
     args = parser.parse_args()
-    if args.file:
-        CONF_FILE = args.file
+    if args.configfile:
+        CONF_FILE = args.configfile
     config = ConfigParser.ConfigParser()
     try:
         config.readfp(open(CONF_FILE))
